@@ -128,23 +128,44 @@ class TabPatternCloser {
   }
 
   displayPreview() {
-    this.previewContent.innerHTML = '';
+    // Clear previous preview content
+    this.previewContent.textContent = '';
 
     if (this.matchingTabs.length === 0) {
-      this.previewContent.innerHTML = '<div class="no-matches">No matching tabs found</div>';
+      const noMatchesDiv = document.createElement('div');
+      noMatchesDiv.className = 'no-matches';
+      noMatchesDiv.textContent = 'No matching tabs found';
+      this.previewContent.appendChild(noMatchesDiv);
       this.closeBtn.disabled = true;
     } else {
       const countDiv = document.createElement('div');
-      countDiv.innerHTML = `<strong>Found <span class="count">${this.matchingTabs.length}</span> matching tabs:</strong>`;
+      const strongTag = document.createElement('strong');
+      strongTag.textContent = 'Found ';
+
+      const countSpan = document.createElement('span');
+      countSpan.className = 'count';
+      countSpan.textContent = this.matchingTabs.length;
+
+      strongTag.appendChild(countSpan);
+      strongTag.append(' matching tabs:'); // Append text node
+
+      countDiv.appendChild(strongTag);
       this.previewContent.appendChild(countDiv);
 
       this.matchingTabs.forEach(tab => {
         const tabDiv = document.createElement('div');
         tabDiv.className = 'preview-tab';
-        tabDiv.innerHTML = `
-          <div class="tab-title">${this.escapeHtml(tab.title)}</div>
-          <div class="tab-url">${this.escapeHtml(tab.url)}</div>
-        `;
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'tab-title';
+        titleDiv.textContent = tab.title;
+
+        const urlDiv = document.createElement('div');
+        urlDiv.className = 'tab-url';
+        urlDiv.textContent = tab.url;
+
+        tabDiv.appendChild(titleDiv);
+        tabDiv.appendChild(urlDiv);
         this.previewContent.appendChild(tabDiv);
       });
 
@@ -173,15 +194,17 @@ class TabPatternCloser {
   }
 
   showError(message) {
-    this.previewContent.innerHTML = `<div style="color: red; font-weight: bold;">${this.escapeHtml(message)}</div>`;
+    // Clear previous preview content
+    this.previewContent.textContent = '';
+
+    const errorDiv = document.createElement('div');
+    errorDiv.style.color = 'red';
+    errorDiv.style.fontWeight = 'bold';
+    errorDiv.textContent = message;
+
+    this.previewContent.appendChild(errorDiv);
     this.previewSection.style.display = 'block';
     this.closeBtn.disabled = true;
-  }
-
-  escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 }
 
