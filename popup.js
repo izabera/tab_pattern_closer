@@ -2,6 +2,7 @@ class TabPatternCloser {
   constructor() {
     this.matchingTabs = [];
     this.currentTabId = null;
+    this.previewTimeout = null;
     this.initializeElements();
     this.attachEventListeners();
     this.getCurrentTab();
@@ -29,11 +30,11 @@ class TabPatternCloser {
       }
     });
 
-    // Reset preview when pattern changes
-    this.patternInput.addEventListener('input', () => this.resetPreview());
-    this.matchTypeSelect.addEventListener('change', () => this.resetPreview());
-    this.caseSensitiveCheckbox.addEventListener('change', () => this.resetPreview());
-    this.useRegexCheckbox.addEventListener('change', () => this.resetPreview());
+    // Live preview with debouncing
+    this.patternInput.addEventListener('input', () => this.debouncedPreview());
+    this.matchTypeSelect.addEventListener('change', () => this.debouncedPreview());
+    this.caseSensitiveCheckbox.addEventListener('change', () => this.debouncedPreview());
+    this.useRegexCheckbox.addEventListener('change', () => this.debouncedPreview());
   }
 
   async getCurrentTab() {
@@ -49,6 +50,24 @@ class TabPatternCloser {
     this.previewSection.style.display = 'none';
     this.closeBtn.disabled = true;
     this.matchingTabs = [];
+  }
+
+  debouncedPreview() {
+    // Clear any existing timeout
+    if (this.previewTimeout) {
+      clearTimeout(this.previewTimeout);
+    }
+
+    // Reset preview immediately for visual feedback
+    this.resetPreview();
+
+    // Set new timeout for preview update
+    this.previewTimeout = setTimeout(() => {
+      const pattern = this.patternInput.value.trim();
+      if (pattern) {
+        this.previewMatches();
+      }
+    }, 400); // 400ms delay after user stops typing
   }
 
   async previewMatches() {
