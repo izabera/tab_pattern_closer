@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "Tab Pattern Closer",
+  "version": "1.0",
+  "description": "Close all tabs matching a URL or title pattern",
+  
+  "permissions": [
+    "tabs"
+  ],
+  
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Close tabs by pattern"
+  },
+  
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  }
+}
