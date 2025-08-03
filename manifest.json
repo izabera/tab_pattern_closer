@@ -4,6 +4,12 @@
   "version": "1.0",
   "description": "Close all tabs matching a URL or title pattern",
 
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tab-pattern-closer@example.com"
+    }
+  },
+
   "permissions": [
     "tabs"
   ],
