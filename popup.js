@@ -184,8 +184,9 @@ class TabPatternCloser {
       const tabIds = this.matchingTabs.map(tab => tab.id);
       await browserAPI.tabs.remove(tabIds);
 
-      // Close the popup after successful operation
-      window.close();
+      // Reset the UI instead of closing the window
+      this.patternInput.value = '';
+      this.resetPreview();
 
     } catch (error) {
       console.error('Error closing tabs:', error);
