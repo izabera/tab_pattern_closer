@@ -9,6 +9,7 @@ class TabPatternCloser {
     this.initializeElements();
     this.attachEventListeners();
     this.getCurrentTab();
+    this.patternInput.focus();
   }
 
   initializeElements() {
@@ -29,6 +30,13 @@ class TabPatternCloser {
     this.matchTypeSelect.addEventListener('change', () => this.debouncedPreview());
     this.caseSensitiveCheckbox.addEventListener('change', () => this.debouncedPreview());
     this.useRegexCheckbox.addEventListener('change', () => this.debouncedPreview());
+
+    // Add Enter key listener for closing tabs
+    this.patternInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !this.closeBtn.disabled) {
+        this.closeTabs();
+      }
+    });
   }
 
   async getCurrentTab() {
@@ -187,6 +195,7 @@ class TabPatternCloser {
       // Reset the UI instead of closing the window
       this.patternInput.value = '';
       this.resetPreview();
+      this.patternInput.focus();
 
     } catch (error) {
       console.error('Error closing tabs:', error);
