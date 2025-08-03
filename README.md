@@ -24,13 +24,13 @@ The extension will be loaded and you'll see a new icon in the toolbar.
 4. Optional settings:
    - **Case sensitive**: Make matching case-sensitive
    - **Use regex pattern**: Treat the pattern as a regular expression
-5. Click **Preview** to see which tabs will be closed
+5. The preview updates automatically as you type
 6. Review the list and click **Close Tabs** to proceed
 
 ## Features
 
 - **Safe**: Never closes your current active tab
-- **Preview**: See exactly which tabs will be closed before proceeding
+- **Live preview**: See matching tabs update automatically as you type
 - **Flexible matching**: Match by URL, title, or both
 - **Regex support**: Use regular expressions for complex patterns
 - **Case sensitivity**: Optional case-sensitive matching

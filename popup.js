@@ -13,22 +13,13 @@ class TabPatternCloser {
     this.matchTypeSelect = document.getElementById('matchType');
     this.caseSensitiveCheckbox = document.getElementById('caseSensitive');
     this.useRegexCheckbox = document.getElementById('useRegex');
-    this.previewBtn = document.getElementById('previewBtn');
     this.closeBtn = document.getElementById('closeBtn');
     this.previewSection = document.getElementById('preview');
     this.previewContent = document.getElementById('previewContent');
   }
 
   attachEventListeners() {
-    this.previewBtn.addEventListener('click', () => this.previewMatches());
     this.closeBtn.addEventListener('click', () => this.closeTabs());
-
-    // Enable preview on Enter key
-    this.patternInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        this.previewMatches();
-      }
-    });
 
     // Live preview with debouncing
     this.patternInput.addEventListener('input', () => this.debouncedPreview());
