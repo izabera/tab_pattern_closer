@@ -93,49 +93,37 @@ class TabPatternCloser {
     const caseSensitive = this.caseSensitiveCheckbox.checked;
     const useRegex = this.useRegexCheckbox.checked;
 
-    let matcher;
-
-    if (useRegex) {
-      try {
-        const flags = caseSensitive ? 'g' : 'gi';
-        matcher = new RegExp(pattern, flags);
-      } catch (error) {
-        throw new Error('Invalid regex pattern: ' + error.message);
+    const createMatcher = () => {
+      if (useRegex) {
+        try {
+          const flags = caseSensitive ? 'g' : 'gi';
+          return new RegExp(pattern, flags);
+        } catch (error) {
+          throw new Error('Invalid regex pattern: ' + error.message);
+        }
+      } else {
+        const searchPattern = caseSensitive ? pattern : pattern.toLowerCase();
+        return (text) => {
+          const searchText = caseSensitive ? text : text.toLowerCase();
+          return searchText.includes(searchPattern);
+        };
       }
-    } else {
-      // Simple string matching
-      const searchPattern = caseSensitive ? pattern : pattern.toLowerCase();
-      matcher = (text) => {
-        const searchText = caseSensitive ? text : text.toLowerCase();
-        return searchText.includes(searchPattern);
-      };
-    }
+    };
+
+    const matcher = createMatcher();
 
     return tabs.filter(tab => {
-      // Don't close the current tab
       if (tab.id === this.currentTabId) {
         return false;
       }
 
-      let shouldMatch = false;
+      const check = (text) => useRegex ? matcher.test(text) : matcher(text);
 
-      if (matchType === 'url' || matchType === 'both') {
-        if (useRegex) {
-          shouldMatch = shouldMatch || matcher.test(tab.url);
-        } else {
-          shouldMatch = shouldMatch || matcher(tab.url);
-        }
-      }
+      if (matchType === 'url' && check(tab.url)) return true;
+      if (matchType === 'title' && check(tab.title)) return true;
+      if (matchType === 'both' && (check(tab.url) || check(tab.title))) return true;
 
-      if (matchType === 'title' || matchType === 'both') {
-        if (useRegex) {
-          shouldMatch = shouldMatch || matcher.test(tab.title);
-        } else {
-          shouldMatch = shouldMatch || matcher(tab.title);
-        }
-      }
-
-      return shouldMatch;
+      return false;
     });
   }
 
