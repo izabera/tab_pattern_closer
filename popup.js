@@ -67,7 +67,7 @@ class TabPatternCloser {
       if (pattern) {
         this.previewMatches();
       }
-    }, 400); // 400ms delay after user stops typing
+    }, 200); // 200ms delay after user stops typing
   }
 
   async previewMatches() {
