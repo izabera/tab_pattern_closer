@@ -1,6 +1,6 @@
 # Tab Pattern Closer
 
-A Firefox extension to close all tabs matching a URL or title pattern.
+A Chrome/Firefox extension to close all tabs matching a URL or title pattern.
 
 ## Installation
 

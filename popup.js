@@ -1,3 +1,6 @@
+// Chrome/Firefox compatibility
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+
 class TabPatternCloser {
   constructor() {
     this.matchingTabs = [];
@@ -30,7 +33,7 @@ class TabPatternCloser {
 
   async getCurrentTab() {
     try {
-      const [currentTab] = await browser.tabs.query({ active: true, currentWindow: true });
+      const [currentTab] = await browserAPI.tabs.query({ active: true, currentWindow: true });
       this.currentTabId = currentTab.id;
     } catch (error) {
       console.error('Error getting current tab:', error);
@@ -71,7 +74,7 @@ class TabPatternCloser {
 
     try {
       // Get all tabs
-      const allTabs = await browser.tabs.query({});
+      const allTabs = await browserAPI.tabs.query({});
 
       // Filter tabs based on pattern and options
       this.matchingTabs = this.filterTabs(allTabs, pattern);
@@ -170,7 +173,7 @@ class TabPatternCloser {
 
     try {
       const tabIds = this.matchingTabs.map(tab => tab.id);
-      await browser.tabs.remove(tabIds);
+      await browserAPI.tabs.remove(tabIds);
 
       // Close the popup after successful operation
       window.close();
